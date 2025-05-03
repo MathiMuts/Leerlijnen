@@ -79,7 +79,7 @@ var courses = {
 
 var relations = [
 // Analyse 1
-[["G0N30B", "G0N86B"], [["right", 8, 2], ["center", 8.5, 2], ["center", 8.5, 4], ["right", 8, 4]]],
+[["G0N30B", "G0N86B"], [["right", 8, 2], ["center", 8.49, 2], ["center", 8.49, 4], ["right", 8, 4]]],
 
 // BnR 2
 [["G0U13D", "G0N30B"], [["top", 8, 1], ["bottom", 8, 2]]],
@@ -110,13 +110,13 @@ var relations = [
 [["G0Y40A", "G0N98A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
 [["G0Y40A", "G0S00A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 7.5, 0.3], ["center", 7.5, 5], ["right", 7, 5]]],
 [["G0Y40A", "G0P28A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 5, 0.3], ["bottom", 5, 3]]],
-[["G0Y40A", "G0N86B"], [["top", 0, 2], ["center", 3, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 4], ["right", 8, 4]]],
+[["G0Y40A", "G0N86B"], [["top", 0, 2], ["center", 3, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 4], ["right", 8, 4]]],
 
 // Diff
 [["G0N84B", "G0P34A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
 [["G0N84B", "G0Y20A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
 [["G0N84B", "G0N98A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
-[["G0N84B", "G0N86B"], [["top", 0, 3], ["center", 4, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 4], ["right", 8, 4]]],
+[["G0N84B", "G0N86B"], [["top", 0, 3], ["center", 4, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 4], ["right", 8, 4]]],
 
 // Lineaire
 [["G0N27A", "G0N84B"], [["left", 0, 4], ["right", 0, 3]]],
@@ -125,10 +125,10 @@ var relations = [
 [["G0N27A", "G0N98A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
 [["G0N27A", "G0P30A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["right", 2, 3]]],
 
-[["G0N27A", "G0T45B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 3], ["right", 8, 3]]],
-[["G0N27A", "G0N86B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 4], ["right", 8, 4]]],
-[["G0N27A", "G0N88B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 5], ["right", 8, 5]]],
-[["G0N27A", "G0N31B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.5, 0.3], ["center", 8.5, 6], ["right", 8, 6]]],
+[["G0N27A", "G0T45B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 3], ["right", 8, 3]]],
+[["G0N27A", "G0N86B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 4], ["right", 8, 4]]],
+[["G0N27A", "G0N88B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 5], ["right", 8, 5]]],
+[["G0N27A", "G0N31B"], [["top", 0, 4], ["center", 5, 0.3], ["center", 8.49, 0.3], ["center", 8.49, 6], ["right", 8, 6]]],
 
 // BnR 1
 [["G0U13C", "G0N27A"], [["left", 0, 5], ["right", 0, 4]]],
@@ -500,7 +500,7 @@ p.update = function() {
 window.Column = createjs.promote(Column, "Container");
 }());
 
-function CanvasButton(label, x, y, width, height, onClick) {
+function CanvasButton(label, x, y, width, height, isOn, onClick) {
   this.Container_constructor();
 
   this.label = label;
@@ -509,7 +509,7 @@ function CanvasButton(label, x, y, width, height, onClick) {
   this.width = width;
   this.height = height;
   this.onClick = onClick;
-  this.isOn = false;
+  this.isOn = isOn;
 
   this.setup();
 }
@@ -592,29 +592,12 @@ function hide_arrows_on_init() {
 /*
  INFO: CANVAS CREATIE
 */
-// Calculate canvas dimensions
-const canvasColumns = Object.keys(columns).length - 2;
-const canvasRows = 6;
-
-const canvasWidth = cwidth * canvasColumns;
-const canvasHeight = (canvasRows - 1 ) * rheight + cwidth + offset.y;
-
-// Set canvas dimensions dynamically
 const canvas = document.getElementById("canvas");
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
+canvas.width = cwidth * (Object.keys(columns).length - 4);
+canvas.height = (6 - 1 ) * rheight + cwidth + offset.y;
 
-// Initialize the stage
 var stage = new createjs.Stage("canvas");
 stage.enableMouseOver();
-
-// Add a title
-var title = new createjs.Text("Leerlijnen Fysica", "40px Arial", COLORS.textColor);
-title.textAlign = "center";
-title.textBaseline = "top";
-title.x = canvas.width / 2;
-title.y = 20;
-stage.addChild(title);
 
 for (let i = 0; i <=  Object.keys(columns).length - 2; i++) {
   var column = new Column(i, columns[i][0], columns[i][1]);
@@ -683,8 +666,31 @@ stage.on("stagemousedown",
   }
 );
 
+// function updatePositions() {
+//   subtitle.x = offset.x + (hiddenColumns ? 1 : 2) * cwidth + 4 * hpadding;
+//   title.x = canvas.width / 2;
+
+//   toggleMinorSterButton.x = offset.x + (hiddenColumns ? 2 : 3) * cwidth;
+//   toggleMinorWiskButton.x = offset.x + (hiddenColumns ? 3 : 4) * cwidth;
+//   toggleMinorBioButton.x = offset.x + (hiddenColumns ? 4 : 5) * cwidth;
+//   toggleMinorBniButton.x = offset.x + (hiddenColumns ? 5 : 6) * cwidth;
+
+//   stage.update();
+// }
+
+let hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
+
 function toggle_minor(minor) {
   minorStates[minor] = !minorStates[minor];
+  
+  
+  hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
+
+  if (hiddenColumns) {
+    canvas.width = cwidth * (Object.keys(columns).length - 4);
+  } else {
+    canvas.width = cwidth * (Object.keys(columns).length - 2);
+  }
 
   for (const id in courses) {
     const course = courses[id][3];
@@ -722,28 +728,36 @@ function toggle_minor(minor) {
       arrow.disabled = false;
     }
   }
+  // updatePositions();
+
   stage.update();
 };
 
-var title = new createjs.Text("Toon Minoren:", "20px Arial", COLORS.textColor);
+var title = new createjs.Text("Leerlijnen Fysica", "40px Arial", COLORS.textColor);
 title.textAlign = "center";
 title.textBaseline = "top";
-
-title.x = offset.x + ((Object.keys(columns).length - 8)/2)*cwidth + 4*hpadding;
-title.y = 1.8*bheight;
+title.x = canvas.width / 2;
+title.y = 20;
 stage.addChild(title);
 
-var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + ((Object.keys(columns).length - 8)/2 + 1)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
+var subtitle = new createjs.Text("Toon Minoren:", "20px Arial", COLORS.textColor);
+subtitle.textAlign = "center";
+subtitle.textBaseline = "top";
+subtitle.x = offset.x + 2*cwidth + 4*hpadding;
+subtitle.y = 1.8*bheight;
+stage.addChild(subtitle);
+
+var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + 2*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_ster_inf"); });
 stage.addChild(toggleMinorSterButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + ((Object.keys(columns).length - 8)/2 + 2)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
+var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_wisk"); });
 stage.addChild(toggleMinorWiskButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor\nbio-chemie", offset.x + ((Object.keys(columns).length - 8)/2 + 3)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bio"); });
-stage.addChild(toggleMinorWiskButton);
+var toggleMinorBioButton = new CanvasButton("Minor\nbio-chemie", offset.x + 4*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bio"); });
+stage.addChild(toggleMinorBioButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor business\n& innovation", offset.x + ((Object.keys(columns).length - 8)/2 + 4)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bni"); });
-stage.addChild(toggleMinorWiskButton);
+var toggleMinorBniButton = new CanvasButton("Minor business\n& innovation", offset.x + 5*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bni"); });
+stage.addChild(toggleMinorBniButton);
 
 createjs.Ticker.on("tick", stage);
 </script>
