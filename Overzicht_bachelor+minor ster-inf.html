@@ -21,6 +21,14 @@ var columns = {
 };
 
 var courses = {
+  // Wiskunde basis
+  "G0Y37A": ["Calculus 1", [[0, 2], 1], "basis_wisk"],
+  "G0Y40A": ["Calculus 2", [[0, 3], 1], "basis_wisk"],
+  "G0N84B": ["Differentiaal-\nvergelijkingen", [[0, 4], 1], "basis_wisk"],
+  "G0N27A": ["Lineaire algebra", [[0, 5], 1], "basis_wisk"],
+  "G0U13C": ["Bewijzen en\nredeneren", [[0, 6], 1], "basis_wisk"],
+  "G0Z26A": ["Kansrekenen en\nstatistiek", [[0, 7], 1], "basis_wisk"],
+  // Fysica
   "G0N29B": ["AN I:\nMechanica", [[2, 1], 1], "default"],
   "G0W75A": ["Fysica practicum", [[6, 1], 1], "default"],
   "G0P26A": ["Thermodynamica", [[7, 2], 1], "default"],
@@ -44,13 +52,8 @@ var courses = {
   "G0N98A": ["Fluid\ndynamics", [[2, 5], 1], "minor_ster_inf"],
   "G0Z38A": ["Astronomy\nmethods", [[3, 5], 1], "minor_ster_inf"],
   "G0P81A": ["Gegevensstructuren &\nalgoritmen", [[1, 6], 1], "minor_ster_inf"],
-  // Wisk
-  "G0Y37A": ["Calculus 1", [[8, 2], 1], "basis_wisk"],
-  "G0Y40A": ["Calculus 2", [[8, 3], 1], "basis_wisk"],
-  "G0N84B": ["Differentiaal-\nvergelijkingen", [[8, 4], 1], "basis_wisk"],
-  "G0N27A": ["Lineaire algebra", [[8, 5], 1], "basis_wisk"],
-  "G0U13C": ["Bewijzen en\nredeneren", [[8, 6], 1], "basis_wisk"],
-  "G0Z26A": ["Kansrekenen en\nstatistiek", [[8, 7], 1], "basis_wisk"],
+  // Wiskunde minor
+  "G0U13D": ["Bewijzen en\nredeneren II", [[8, 1], 1], "minor_wisk"],
 };
 
 var relations = [
@@ -209,12 +212,17 @@ const COLORS = {
   courseInactive: "#eee",
   arrowStroke: "#000",
   textColor: "#000",
+  buttonDefault: "#049DD9",
+  buttonHover: "#04B2D9",
+  buttonBorder: "#003c70",
+  buttonOn: "#73bfc7",
+  buttonOnHover: "#57B7CC",
 };
 
 /*
 INFO: TEKENFUNCTIES
 */
-const offset = {x: 120, y: 120};
+const offset = {x: 40, y: 240};
 const cwidth = 240;
 const rheight = 100;
 const vspacing = 40;
@@ -314,7 +322,7 @@ function Course(id, label, loc, sem, color, type) {
 var p = createjs.extend(Course, createjs.Container);
 
 p.setup = function() {
-  if (this.loc[0] !== 8) {
+  if (this.loc[0] !== 0) {
     this.x = offset.x + (this.loc[0] - 1) * cwidth;
     this.y = offset.y + (7 - this.loc[1] - this.sem) * rheight;
   } else {
@@ -352,7 +360,6 @@ p.update = function() {
 
 p.handleClick = function (event) {
   for (const id in courses) {
-    console.log(courses[id]);
     const item = courses[id][3];
     if (item.id == this.id) {
       item.color = COLORS.courseSelected(columns[this.loc[0]][1]);
@@ -418,7 +425,7 @@ p.setup = function() {
     this.height = 6 * rheight - vspacing + 2 * vpadding;
   } else {
     this.x = offset.x + bwidth + 3 * hpadding;
-    this.y = 7 * rheight + 2 * vpadding;
+    this.y = offset.y + 6 * rheight + 0.5 * vspacing;
     
     this.width = 6*(bwidth + 4 * hpadding) - 2 * hpadding;
     this.height = 1 * rheight - vspacing + 2 * vpadding;
@@ -450,11 +457,77 @@ p.update = function() {
 window.Column = createjs.promote(Column, "Container");
 }());
 
+function CanvasButton(label, x, y, width, height, onClick) {
+  this.Container_constructor();
+
+  this.label = label;
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.onClick = onClick;
+  this.isOn = false;
+
+  this.setup();
+}
+var p = createjs.extend(CanvasButton, createjs.Container);
+
+p.setup = function () {
+  this.background = new createjs.Shape();
+  this.updateBackground();
+
+  this.width = bwidth;
+  this.height = rheight - vspacing;
+
+  var text = new createjs.Text(this.label, "16px Arial", COLORS.textColor);
+  text.textAlign = "center";
+  text.textBaseline = "top";
+  var b = text.getBounds();
+  text.x = this.width / 2;
+  text.y = this.height / 2 - (b.height / 2);
+
+  this.addChild(this.background, text);
+
+  this.cursor = "pointer";
+
+  this.on("mouseover", () => {
+    this.background.graphics.clear();
+    this.background.graphics
+      .setStrokeStyle(1.25)
+      .beginFill(this.isOn ? COLORS.buttonOnHover : COLORS.buttonHover)
+      .beginStroke(COLORS.buttonBorder)
+      .drawRoundRect(0, 0, this.width, this.height, 10);
+    stage.update();
+  });
+
+  this.on("mouseout", () => {
+    this.updateBackground();
+    stage.update();
+  });
+
+  this.on("click", (event) => {
+    this.isOn = !this.isOn;
+    this.updateBackground();
+    this.onClick();
+    stage.update();
+  });
+};
+
+p.updateBackground = function () {
+  this.background.graphics.clear();
+  this.background.graphics
+    .setStrokeStyle(1.25)
+    .beginFill(this.isOn ? COLORS.buttonOn : COLORS.buttonDefault)
+    .beginStroke(COLORS.buttonBorder)
+    .drawRoundRect(0, 0, this.width, this.height, 10);
+};
+
+window.CanvasButton = createjs.promote(CanvasButton, "Container");
+
 </script>
 </head>
 <body>
-<canvas id="canvas" width="2000" height="1000"></canvas>
-<button id="toggleButton" onclick="toggle_minor('minor_ster_inf')">Toggle Minor ster-inf Courses</button>
+<canvas id="canvas" width="1920" height="1000"></canvas>
 <script type="text/javascript">
 /*
  INFO: CANVAS CREATIE
@@ -463,6 +536,13 @@ var stage, holder;
 
 stage = new createjs.Stage("canvas");
 stage.enableMouseOver();
+
+var title = new createjs.Text("Leerlijnen Fysica", "40px Arial", COLORS.textColor);
+title.textAlign = "center";
+title.textBaseline = "top";
+title.x = stage.canvas.width / 2;
+title.y = 20;
+stage.addChild(title);
 
 for (let i = 0; i <= 8; i++) {
   var column = new Column(i, columns[i][0], columns[i][1]);
@@ -507,36 +587,39 @@ function release_courses() {
 
 stage.on("stagemousedown",
   function(event) {
-    clicked_object = stage.getObjectUnderPoint(event.stageX, event.stageY);
-    if (clicked_object == null || clicked_object.parent.type != "course") {
-      release_courses()
+    const clicked_object = stage.getObjectUnderPoint(event.stageX, event.stageY);
+
+    if (clicked_object != null && (clicked_object && clicked_object.parent instanceof CanvasButton || clicked_object.parent.type === "course")) {
+      return;
     }
+    console.log("stage clicked");
+    release_courses()
   }
 );
 
-let minor_ster_inf = true;
+let minorStates = {
+  minor_ster_inf: true,
+  minor_wisk: true,
+};
 
- function toggle_minor(minor) {
-  if (minor == "minor_ster_inf") {
-    minor_ster_inf = !minor_ster_inf;
-  }
+function toggle_minor(minor) {
+  minorStates[minor] = !minorStates[minor];
 
   for (const id in courses) {
     const course = courses[id][3];
     const tag = courses[id][2];
 
-    if (minor_ster_inf && tag === minor) {
+    if (minorStates[tag] !== undefined && minorStates[tag]) {
       course.visible = true;
-    } else if (!minor_ster_inf && tag === minor) {
+    } else if (minorStates[tag] !== undefined && !minorStates[tag]) {
       if (course.color === COLORS.courseSelected(columns[course.loc[0]][1])) {
-        release_courses()
+        release_courses();
       }
       course.visible = false;
     } else {
       course.visible = true;
     }
   }
-
   for (const relation of relations) {
     const [source, target] = relation[0];
     const arrow = relation[2];
@@ -558,8 +641,22 @@ let minor_ster_inf = true;
       arrow.disabled = false;
     }
   }
+
   stage.update();
 };
+
+var title = new createjs.Text("Schakel Minoren:", "20px Arial", COLORS.textColor);
+title.textAlign = "center";
+title.textBaseline = "top";
+title.x = offset.x + 1*cwidth + 4*hpadding;
+title.y = 1.8*bheight;
+stage.addChild(title);
+
+var toggleMinorSterButton = new CanvasButton("Schakel minor\nster-inf", offset.x + 2*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
+stage.addChild(toggleMinorSterButton);
+
+var toggleMinorWiskButton = new CanvasButton("Schakel minor\nwiskunde", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
+stage.addChild(toggleMinorWiskButton);
 
 createjs.Ticker.on("tick", stage);
 </script>
