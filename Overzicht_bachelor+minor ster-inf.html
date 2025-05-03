@@ -587,20 +587,32 @@ function hide_arrows_on_init() {
 </head>
 <body>
 
-<canvas id="canvas" width="2400" height="1000"><!--240 per kolom--></canvas>
+<canvas id="canvas"><!--240 per kolom--></canvas>
 <script type="text/javascript">
 /*
  INFO: CANVAS CREATIE
 */
-var stage, holder;
+// Calculate canvas dimensions
+const canvasColumns = Object.keys(columns).length - 2;
+const canvasRows = 6;
 
-stage = new createjs.Stage("canvas");
+const canvasWidth = cwidth * canvasColumns;
+const canvasHeight = (canvasRows - 1 ) * rheight + cwidth + offset.y;
+
+// Set canvas dimensions dynamically
+const canvas = document.getElementById("canvas");
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+// Initialize the stage
+var stage = new createjs.Stage("canvas");
 stage.enableMouseOver();
 
+// Add a title
 var title = new createjs.Text("Leerlijnen Fysica", "40px Arial", COLORS.textColor);
 title.textAlign = "center";
 title.textBaseline = "top";
-title.x = stage.canvas.width / 2;
+title.x = canvas.width / 2;
 title.y = 20;
 stage.addChild(title);
 
@@ -611,8 +623,8 @@ for (let i = 0; i <=  Object.keys(columns).length - 2; i++) {
 }
 
 let minorStates = {
-  minor_ster_inf: false,
-  minor_wisk: false,
+  minor_ster_inf: true,
+  minor_wisk: true,
   minor_bio: false,
   minor_bni: false,
 };
@@ -692,7 +704,6 @@ function toggle_minor(minor) {
   for (const relation of relations) {
     const [source, target] = relation[0];
     const arrow = relation[2];
-
     if (
       (courses[source][3] && courses[source][3].visible) &&
       (courses[target][3] && courses[target][3].visible) &&
@@ -700,6 +711,7 @@ function toggle_minor(minor) {
        courses[target][3].color === COLORS.courseSelected(columns[courses[target][3].loc[0]][1]))
     ) {
       arrow.visible = true;
+      arrow.disabled = false;
     } else if (
       (courses[source][3] && !courses[source][3].visible) ||
       (courses[target][3] && !courses[target][3].visible)
@@ -716,20 +728,21 @@ function toggle_minor(minor) {
 var title = new createjs.Text("Toon Minoren:", "20px Arial", COLORS.textColor);
 title.textAlign = "center";
 title.textBaseline = "top";
-title.x = offset.x + 2*cwidth + 4*hpadding;
+
+title.x = offset.x + ((Object.keys(columns).length - 8)/2)*cwidth + 4*hpadding;
 title.y = 1.8*bheight;
 stage.addChild(title);
 
-var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
+var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + ((Object.keys(columns).length - 8)/2 + 1)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
 stage.addChild(toggleMinorSterButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + 4*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
+var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + ((Object.keys(columns).length - 8)/2 + 2)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
 stage.addChild(toggleMinorWiskButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor\nbio-chemie", offset.x + 5*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bio"); });
+var toggleMinorWiskButton = new CanvasButton("Minor\nbio-chemie", offset.x + ((Object.keys(columns).length - 8)/2 + 3)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bio"); });
 stage.addChild(toggleMinorWiskButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor business\n& innovation", offset.x + 6*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bni"); });
+var toggleMinorWiskButton = new CanvasButton("Minor business\n& innovation", offset.x + ((Object.keys(columns).length - 8)/2 + 4)*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bni"); });
 stage.addChild(toggleMinorWiskButton);
 
 createjs.Ticker.on("tick", stage);
