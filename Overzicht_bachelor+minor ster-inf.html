@@ -18,6 +18,8 @@ var columns = {
   6.5: ["Chemie", 300],
   7  : ["Statistische Fysica", 330],
   8  : ["Geavanceerde Wiskunde", 30],
+  9  : ["Biochemie", 100],
+  10 : ["Economie", 160],
 };
 
 var courses = {
@@ -54,6 +56,25 @@ var courses = {
   "G0P81A": ["Gegevensstructuren &\nalgoritmen", [[1, 6], 1], "minor_ster_inf"],
   // Wiskunde minor
   "G0U13D": ["Bewijzen en\nredeneren II", [[8, 1], 1], "minor_wisk"],
+  "G0N30B": ["Analyse I", [[8, 2], 1], "minor_wisk"],
+  "G0T45B": ["Algebraïsche structuren", [[8, 3], 1], "minor_wisk"],
+  "G0N86B": ["Analyse II", [[8, 4], 1], "minor_wisk"],
+  "G0N88B": ["Algebra I", [[8, 5], 1], "minor_wisk"],
+  "G0N31B": ["Meetkunde I", [[8, 6], 1], "minor_wisk"],
+  // bio-chemie minor
+  "G0N20E": ["Dynamische biochemie", [[9, 1], 1], "minor_bio"],
+  "G0N04C": ["Celbiologie en\nbiochemie", [[9, 2], 2], "minor_bio"],
+  "G0O53C": ["Moleculaire biologie", [[9, 4], 1], "minor_bio"],
+  "K0B25B": ["Celfysiologie", [[9, 5], 1], "minor_bio"],
+  "G0O58C": ["Spectroscopy of\nBiomolecules", [[9, 6], 1], "minor_bio"],
+  // business minor
+  "G0S62A": ["Principles of Economics", [[10, 1], 1], "minor_bni"],
+  "D0H54A": ["Marketing engineering", [[10, 2], 1], "minor_bni"],
+  "G0S66A": ["Workshops innovatie", [[10, 3], 1], "minor_bni"],
+  "D0T32A": ["Economics of Innovation\n& Intellectual Property", [[10, 4], 1], "minor_bni"],
+  "H0O00A": ["Globale uitdagingen", [[10, 5], 1], "minor_bni"],
+  "G0S68A": ["Innovatieproject", [[10, 6], 1], "minor_bni"],
+  
 };
 
 var relations = [
@@ -212,17 +233,17 @@ const COLORS = {
   courseInactive: "#eee",
   arrowStroke: "#000",
   textColor: "#000",
-  buttonDefault: "#049DD9",
-  buttonHover: "#04B2D9",
+  buttonDefault: "#73bfc7",
+  buttonHover: "#57B7CC",
+  buttonOn: "#049DD9",
+  buttonOnHover: "#04B2D9",
   buttonBorder: "#003c70",
-  buttonOn: "#73bfc7",
-  buttonOnHover: "#57B7CC",
 };
 
 /*
 INFO: TEKENFUNCTIES
 */
-const offset = {x: 40, y: 240};
+const offset = {x: 40, y: 260};
 const cwidth = 240;
 const rheight = 100;
 const vspacing = 40;
@@ -524,10 +545,27 @@ p.updateBackground = function () {
 
 window.CanvasButton = createjs.promote(CanvasButton, "Container");
 
+function hide_arrows_on_init() {
+  for (const relation of relations) {
+    const [source, target] = relation[0];
+    const arrow = relation[2];
+
+    if (
+      (courses[source][3] && !courses[source][3].visible) ||
+      (courses[target][3] && !courses[target][3].visible)
+    ) {
+      arrow.disabled = true;
+    } else {
+      arrow.disabled = false;
+    }
+  }
+}
+
 </script>
 </head>
 <body>
-<canvas id="canvas" width="1920" height="1000"></canvas>
+
+<canvas id="canvas" width="2400" height="1000"><!--240 per kolom--></canvas>
 <script type="text/javascript">
 /*
  INFO: CANVAS CREATIE
@@ -544,10 +582,32 @@ title.x = stage.canvas.width / 2;
 title.y = 20;
 stage.addChild(title);
 
-for (let i = 0; i <= 8; i++) {
+for (let i = 0; i <= 10; i++) {
   var column = new Column(i, columns[i][0], columns[i][1]);
   columns[i].push(column);
   stage.addChild(column);
+}
+
+let minorStates = {
+  minor_ster_inf: false,
+  minor_wisk: false,
+  minor_bio: false,
+  minor_bni: false,
+};
+
+for (const id in courses) {
+  let [label, info] = courses[id];
+  let loc = info[0];
+  let sem = info[1];
+  let color = columns[loc[0]][1];
+  var course = new Course(id, label, loc, sem, color);
+  courses[id].push(course);
+  stage.addChild(course);
+
+  const tag = courses[id][2];
+  if (minorStates[tag] !== undefined && !minorStates[tag]) {
+    course.visible = false;
+  }
 }
 
 for (let i = 0; i < relations.length; i++) {
@@ -555,16 +615,9 @@ for (let i = 0; i < relations.length; i++) {
   relations[i].push(arrow);
   stage.addChild(arrow);
 }
-    
-for (const id in courses) {
-  let [label, info] = courses[id];
-  let loc = info[0]
-  let sem = info[1]
-  let color = columns[loc[0]][1];
-  var course = new Course(id, label, loc, sem, color);
-  courses[id].push(course);
-  stage.addChild(course);
-};
+
+hide_arrows_on_init();
+
 function release_courses() {
   for (const id in courses) {
        let item = courses[id][3];
@@ -596,11 +649,6 @@ stage.on("stagemousedown",
     release_courses()
   }
 );
-
-let minorStates = {
-  minor_ster_inf: true,
-  minor_wisk: true,
-};
 
 function toggle_minor(minor) {
   minorStates[minor] = !minorStates[minor];
@@ -645,17 +693,23 @@ function toggle_minor(minor) {
   stage.update();
 };
 
-var title = new createjs.Text("Schakel Minoren:", "20px Arial", COLORS.textColor);
+var title = new createjs.Text("Toon Minoren:", "20px Arial", COLORS.textColor);
 title.textAlign = "center";
 title.textBaseline = "top";
-title.x = offset.x + 1*cwidth + 4*hpadding;
+title.x = offset.x + 2*cwidth + 4*hpadding;
 title.y = 1.8*bheight;
 stage.addChild(title);
 
-var toggleMinorSterButton = new CanvasButton("Schakel minor\nster-inf", offset.x + 2*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
+var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_ster_inf"); });
 stage.addChild(toggleMinorSterButton);
 
-var toggleMinorWiskButton = new CanvasButton("Schakel minor\nwiskunde", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
+var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + 4*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_wisk"); });
+stage.addChild(toggleMinorWiskButton);
+
+var toggleMinorWiskButton = new CanvasButton("Minor\nbio-chemie", offset.x + 5*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bio"); });
+stage.addChild(toggleMinorWiskButton);
+
+var toggleMinorWiskButton = new CanvasButton("Minor business\n& innovation", offset.x + 6*cwidth, 1.5*bheight, bwidth, bheight, function () { toggle_minor("minor_bni"); });
 stage.addChild(toggleMinorWiskButton);
 
 createjs.Ticker.on("tick", stage);
