@@ -8,6 +8,7 @@
 INFO OPLEIDING FYSICA
 */
 var columns = {
+  0  : ["Wiskundige Basis", 30],
   1  : ["Informatica", 0],
   2  : ["Klassieke Fysica", 60],
   3  : ["Sterrenkunde", 120],
@@ -16,90 +17,85 @@ var columns = {
   6  : ["Experimentele Fysica", 270],
   6.5: ["Chemie", 300],
   7  : ["Statistische Fysica", 330],
-  8  : ["Wiskundige basis", 30],
+  8  : ["Geavanceerde Wiskunde", 30],
 };
 
 var courses = {
-"G0N29B": ["AN I\nMechanica", [[2, 1], 1]],
-"G0W75A": ["Fysica practicum", [[6, 1], 1]],
-"G0P26A": ["Thermodynamica", [[7, 2], 1]],
-"G0N94C": ["AN II\nElektromagnetisme", [[4, 2], 1]],
-"G0U45A": ["Inleiding tot de\n sterrenkunde", [[3, 2], 1]],
-"G0P28A": ["AN III\nFysica van de 20e eeuw", [[5, 3], 1]],
-"G0P30A": ["Klassieke\nmechanica", [[2, 3], 1]],
-"G0P34A": ["Elektrodynamica", [[4, 4], 1]],
-"G0Y20A": ["Kwantummechanica", [[5, 4], 1]],
-"G00E1A": ["Experimentele\nbasistechnieken", [[6, 3.5], 1.5]],
-"G0S00A": ["Statistische mechanica", [[7, 5], 1]],
-"G0P45B": ["Atoom- en kernfysica", [[5, 6], 1]],
-"G0Y94A": ["Fysica van de\ngecond. materie", [[7, 6], 1]],
-"G0P40A": ["Projectwerk\nnatuurkunde", [[6, 5], 2]],
-"G00E0A": ["Chemie", [[6.5, 2.75], 1]],
-"G0N28A": ["Beginselen van\nprogrammeren", [[1, 1], 1]],
-"G0P36B": ["Computergesteund\nprobleemoplossen", [[1, 3.5], 1]],
-//Minor Ster-inf
-"G0Y53A": ["Radiation\nprocesses", [[3, 3], 1]],
-"H01P1A": ["Objectgericht\nprogrammeren", [[1, 4.5], 1]],
-"G0N98A": ["Fluid\ndynamics", [[2, 5], 1]],
-"G0Z38A": ["Astronomy\nmethods", [[3, 5], 1]],
-"G0P81A": ["Gegevensstructuren &\nalgoritmen", [[1, 6], 1]],
-// Wisk
-"G0Y37A": ["Calculus 1", [[8, 2], 1]],
-"G0Y40A": ["Calculus 2", [[8, 3], 1]],
-"G0N84B": ["Differentiaal-\nvergelijkingen", [[8, 4], 1]],
-"G0N27A": ["Lineaire algebra", [[8, 5], 1]],
-"G0U13C": ["Bewijzen en\nredeneren", [[8, 6], 1]],
-"G0Z26A": ["Kansrekenen en\nstatistiek", [[8, 7], 1]],
+  "G0N29B": ["AN I:\nMechanica", [[2, 1], 1]],
+  "G0W75A": ["Fysica practicum", [[6, 1], 1]],
+  "G0P26A": ["Thermodynamica", [[7, 2], 1]],
+  "G0N94C": ["AN II:\nElektromagnetisme", [[4, 2], 1]],
+  "G0U45A": ["Inleiding tot de\n sterrenkunde", [[3, 2], 1]],
+  "G0P28A": ["AN III:\nFysica van de 20e eeuw", [[5, 3], 1]],
+  "G0P30A": ["Klassieke\nmechanica", [[2, 3], 1]],
+  "G0P34A": ["Elektrodynamica", [[4, 4], 1]],
+  "G0Y20A": ["Kwantummechanica", [[5, 4], 1]],
+  "G00E1A": ["Experimentele\nbasistechnieken", [[6, 3.5], 1.5]],
+  "G0S00A": ["Statistische mechanica", [[7, 5], 1]],
+  "G0P45B": ["Atoom- en kernfysica", [[5, 6], 1]],
+  "G0Y94A": ["Fysica van de\ngecond. materie", [[7, 6], 1]],
+  "G0P40A": ["Projectwerk\nnatuurkunde", [[6, 5], 2]],
+  "G00E0A": ["Chemie", [[6.5, 2.75], 1]],
+  "G0N28A": ["Beginselen van\nprogrammeren", [[1, 1], 1]],
+  "G0P36B": ["Computergesteund\nprobleemoplossen", [[1, 3.5], 1]],
+  //Minor Ster-inf
+  "G0Y53A": ["Radiative processes\nin astromomy", [[3, 3], 1]],
+  "H01P1A":["Objectgericht\nprogrammeren", [[1, 4.5], 1]],
+  "G0N98A": ["Fluid\ndynamics", [[2, 5], 1]],
+  "G0Z38A": ["Astronomy\nmethods", [[3, 5], 1]],
+  "G0P81A": ["Gegevensstructuren &\nalgoritmen", [[1, 6], 1]],
+  // Wisk
+  "G0Y37A": ["Calculus 1", [[8, 2], 1]],
+  "G0Y40A": ["Calculus 2", [[8, 3], 1]],
+  "G0N84B": ["Differentiaal-\nvergelijkingen", [[8, 4], 1]],
+  "G0N27A": ["Lineaire algebra", [[8, 5], 1]],
+  "G0U13C": ["Bewijzen en\nredeneren", [[8, 6], 1]],
+  "G0Z26A": ["Kansrekenen en\nstatistiek", [[8, 7], 1]],
 };
 
 var relations = [
 // Calc 1
-[["G0Y37A", "G0Y40A"], [["right", 8, 1], ["left", 8, 2]]],
-[["G0Y37A", "G0N29B"], [["top", 8, 1], ["bottom", 2, 1]]],
-[["G0Y37A", "G0U45A"], [["top", 8, 1], ["center", 2, 0.3], ["center", 3, 0.3], ["bottom", 3, 2]]],
-[["G0Y37A", "G0N94C"], [["top", 8, 1], ["center", 2, 0.3], ["center", 4, 0.3], ["bottom", 4, 2]]],
-[["G0Y37A", "G0P36B"], [["top", 8, 1], ["center", 2, 0.3], ["center", 1.5, 0.3], ["center", 1.5, 2], ["center", 1, 2], ["bottom", 1, 3.5]]],
-[["G0Y37A", "G00E0A"], [["top", 8, 1], ["center", 2, 0.3], ["center", 6.5, 0.3], ["bottom", 6.5, 2.75]]],
+[["G0Y37A", "G0Y40A"], [["right", 0, 1], ["left", 0, 2]]],
+[["G0Y37A", "G0N29B"], [["top", 0, 1], ["bottom", 2, 1]]],
+[["G0Y37A", "G0U45A"], [["top", 0, 1], ["center", 2, 0.3], ["center", 3, 0.3], ["bottom", 3, 2]]],
+[["G0Y37A", "G0N94C"], [["top", 0, 1], ["center", 2, 0.3], ["center", 4, 0.3], ["bottom", 4, 2]]],
+[["G0Y37A", "G0P36B"], [["top", 0, 1], ["center", 2, 0.3], ["center", 1.5, 0.3], ["center", 1.5, 2], ["center", 1, 2], ["bottom", 1, 3.5]]],
+[["G0Y37A", "G00E0A"], [["top", 0, 1], ["center", 2, 0.3], ["center", 6.5, 0.3], ["bottom", 6.5, 2.75]]],
 
 // Calc 2
-[["G0Y40A", "G0N84B"], [["right", 8, 2], ["left", 8, 3]]],
-[["G0Y40A", "G0P30A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["right", 2, 3]]],
-[["G0Y40A", "G0Y53A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["left", 3, 3]]],
-[["G0Y40A", "G0P26A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 7, 0.3], ["bottom", 7, 2]]],
-[["G0Y40A", "G0P34A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
-[["G0Y40A", "G0Y20A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
-[["G0Y40A", "G0N98A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
-[["G0Y40A", "G0S00A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 7.5, 0.3], ["center", 7.5, 5], ["right", 7, 5]]],
-
-[["G0Y40A", "G0P28A"], [["top", 8, 2], ["center", 3, 0.3], ["center", 5, 0.3], ["bottom", 5, 3]]],
+[["G0Y40A", "G0N84B"], [["right", 0, 2], ["left", 0, 3]]],
+[["G0Y40A", "G0P30A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["right", 2, 3]]],
+[["G0Y40A", "G0Y53A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["left", 3, 3]]],
+[["G0Y40A", "G0P26A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 7, 0.3], ["bottom", 7, 2]]],
+[["G0Y40A", "G0P34A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
+[["G0Y40A", "G0Y20A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
+[["G0Y40A", "G0N98A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
+[["G0Y40A", "G0S00A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 7.5, 0.3], ["center", 7.5, 5], ["right", 7, 5]]],
+[["G0Y40A", "G0P28A"], [["top", 0, 2], ["center", 3, 0.3], ["center", 5, 0.3], ["bottom", 5, 3]]],
 
 // Diff
-[["G0N84B", "G0P34A"], [["top", 8, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
-[["G0N84B", "G0Y20A"], [["top", 8, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
-[["G0N84B", "G0N98A"], [["top", 8, 3], ["center", 4, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
+[["G0N84B", "G0P34A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
+[["G0N84B", "G0Y20A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
+[["G0N84B", "G0N98A"], [["top", 0, 3], ["center", 4, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
 
 // Lineaire
-[["G0N27A", "G0N84B"], [["left", 8, 4], ["right", 8, 3]]],
-[["G0N27A", "G0P34A"], [["top", 8, 4], ["center", 5, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
-[["G0N27A", "G0Y20A"], [["top", 8, 4], ["center", 5, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
-[["G0N27A", "G0N98A"], [["top", 8, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
-[["G0N27A", "G0P30A"], [["top", 8, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["right", 2, 3]]],
+[["G0N27A", "G0N84B"], [["left", 0, 4], ["right", 0, 3]]],
+[["G0N27A", "G0P34A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 4, 3.5], ["bottom", 4, 4]]],
+[["G0N27A", "G0Y20A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
+[["G0N27A", "G0N98A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 5], ["right", 2, 5]]],
+[["G0N27A", "G0P30A"], [["top", 0, 4], ["center", 5, 0.3], ["center", 2.5, 0.3], ["center", 2.5, 3], ["right", 2, 3]]],
 
 // BnR 
-[["G0U13C", "G0N27A"], [["left", 8, 5], ["right", 8, 4]]],
-[["G0U13C", "G0Z26A"], [["right", 8, 5], ["left", 8, 6]]],
+[["G0U13C", "G0N27A"], [["left", 0, 5], ["right", 0, 4]]],
+[["G0U13C", "G0Z26A"], [["right", 0, 5], ["left", 0, 6]]],
 // BnR bij AN1
 //[["G0U13C", "G0N29B"], [["top", 8, 5], ["center", 6, 0.3], ["center", 2, 0.3], ["bottom", 2, 1]]],
 
 // Kans en stat 
-[["G0Z26A", "G0P26A"], [["top", 8, 6], ["bottom", 7, 2]]],
-[["G0Z26A", "G0S00A"], [["right", 8, 6], ["center", 8, 6.5], ["center", 7.5, 5], ["right", 7, 5]]],
-[["G0Z26A", "G00E1A"], [["right", 8, 6], ["center", 8, 6.5], ["center", 7.5, 3.75], ["right", 6, 3.75]]],
-[["G0Z26A", "G0Y20A"], [["top", 8, 6], ["center", 7, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
-
-
-
-// --------------------------
+[["G0Z26A", "G0P26A"], [["top", 0, 6], ["bottom", 7, 2]]],
+[["G0Z26A", "G0S00A"], [["right", 0, 6], ["center", 0, 6.5], ["center", 7.5, 5], ["right", 7, 5]]],
+[["G0Z26A", "G00E1A"], [["right", 0, 6], ["center", 0, 6.5], ["center", 7.5, 3.75], ["right", 6, 3.75]]],
+[["G0Z26A", "G0Y20A"], [["top", 0, 6], ["center", 7, 0.3], ["center", 4.5, 0.3], ["center", 4.5, 3.5], ["center", 5, 3.5], ["bottom", 5, 4]]],
 
 // BvP
 [["G0N28A", "G0P36B"], [["top", 1, 1], ["bottom", 1, 3.5]]],
@@ -275,8 +271,8 @@ function drawArrow(instructions) {
   let x = locate[i[0]].x(i[1]);
   let y = locate[i[0]].y(i[2]);
 
-  if (i[1] === 8) {
-    x = locate[i[0]].x(i[1]) - 9 * bwidth + (i[2] - 1) * cwidth;
+  if (i[1] === 0) {
+    x = locate[i[0]].x(i[1]) + (i[2] + 1) * cwidth;
     y = locate[i[0]].y(i[2]) + 1 * bheight + 2 * vspacing + (i[2] - 1) * (bheight + vspacing);
   }
 
@@ -286,8 +282,8 @@ function drawArrow(instructions) {
     x = locate[i[0]].x(i[1]);
     y = locate[i[0]].y(i[2]);
 
-    if (i[1] === 8) {
-      x = locate[i[0]].x(i[1]) - 9 * bwidth + (i[2] - 1) * cwidth;
+    if (i[1] === 0) {
+      x = locate[i[0]].x(i[1])+ (i[2] + 1) * cwidth;
       y = locate[i[0]].y(i[2]) + 1 * bheight + 2 * vspacing + (i[2] - 1) * (bheight + vspacing);
     }
 
@@ -421,7 +417,7 @@ function Column(id, label, color) {
 var p = createjs.extend(Column, createjs.Container);
 
 p.setup = function() {
-  if (this.id != 8) {
+  if (this.id != 0) {
     this.x = offset.x + (this.id - 1) * cwidth - hpadding;
     this.y = offset.y - vpadding;
     
@@ -439,7 +435,7 @@ p.setup = function() {
   text.textAlign = "center";
   var b = text.getBounds();
 
-  if (this.id != 8) {
+  if (this.id != 0) {
     text.x = this.width / 2;
     text.y = - b.height;
   } else {
@@ -464,7 +460,7 @@ window.Column = createjs.promote(Column, "Container");
 </script>
 </head>
 <body>
-<canvas id="canvas" width="1920" height="1080"></canvas>
+<canvas id="canvas" width="2000" height="1000"></canvas>
 <script type="text/javascript">
 /*
 CANVAS CREATIE
@@ -478,7 +474,7 @@ stage.enableMouseOver();
 //base.graphics.beginFill(COLORS.backgroundColor).drawRoundRect(100, 7 * rheight + 2 * vpadding, 7*(bwidth + 4 * hpadding) - 2*hpadding, 2 * rheight - vspacing + 2 * vpadding, 20);
 //stage.addChild(base);
 
-for (let i = 1; i <= 8; i++) {
+for (let i = 0; i <= 8; i++) {
   var column = new Column(i, columns[i][0], columns[i][1]);
   columns[i].push(column);
   stage.addChild(column);
