@@ -10,7 +10,7 @@ INFO: INFO OPLEIDING FYSICA
 var columns = {
   0  : ["Wiskundige Basis", 30],
   1  : ["Informatica", 0],
-  2  : ["Klassieke Fysica", 60],
+  2  : ["Mechanica", 60],
   3  : ["Sterrenkunde", 120],
   4  : ["Elektromagnetisme", 180],
   5  : ["Kwantum Fysica", 240],
@@ -62,15 +62,15 @@ var courses = {
   "G0N88B": ["Algebra I", [[8, 5], 1], "minor_wisk"],
   "G0N31B": ["Meetkunde I", [[8, 6], 1], "minor_wisk"],
   // bio-chemie minor
-  "G0N20E": ["Dynamische biochemie", [[9, 1], 1], "minor_bio"],
-  "G0N04C": ["Celbiologie en\nbiochemie", [[9, 2], 2], "minor_bio"],
+  "G0N04C": ["Celbiologie en\nbiochemie", [[9, 1], 2], "minor_bio"], // TODO: Splitsen?
+  "G0N20E": ["Dynamische biochemie", [[9, 3], 1], "minor_bio"],
   "G0O53C": ["Moleculaire biologie", [[9, 4], 1], "minor_bio"],
   "K0B25B": ["Celfysiologie", [[9, 5], 1], "minor_bio"],
   "G0O58C": ["Spectroscopy of\nBiomolecules", [[9, 6], 1], "minor_bio"],
   // business minor
   "G0S62A": ["Principles of Economics", [[10, 1], 1], "minor_bni"],
   "D0H54A": ["Marketing engineering", [[10, 2], 1], "minor_bni"],
-  "G0S66A": ["Workshops innovatie", [[10, 3], 1], "minor_bni"],
+  "G0S66A": ["Skills voor de\n21ste eeuw", [[10, 3], 1], "minor_bni"],
   "D0T32A": ["Economics of Innovation\n& Intellectual Property", [[10, 4], 1], "minor_bni"],
   "H0O00A": ["Globale uitdagingen", [[10, 5], 1], "minor_bni"],
   "G0S68A": ["Innovatieproject", [[10, 6], 1], "minor_bni"],
@@ -189,6 +189,7 @@ var relations = [
 
 // Chemie
 [["G00E0A", "G00E1A"], [["top", 6.5, 2.75], ["center", 6.5, 3.75], ["right", 6, 3.75]]],
+[["G00E0A", "G0O58C"], [["top", 6.5, 2.75], ["above", 6.5, 4], ["above", 8.5, 4], ["center", 8.5, 6], ["left", 9, 6]]],
 
 // Klassieke mechanica
 [["G0P30A", "G0Y20A"], [["top", 2, 3], ["above", 2, 3], ["above", 5, 3], ["bottom", 5, 4]]],
@@ -213,6 +214,7 @@ var relations = [
 [["G0Y20A", "G0P45B"], [["top", 5, 4], ["bottom", 5, 6]]],
 [["G0Y20A", "G0Y94A"], [["top", 5, 4], ["above", 5, 4], ["above", 6.5, 4], ["center", 6.5, 6], ["left", 7, 6]]],
 [["G0Y20A", "G0P40A"], [["top", 5, 4], ["above", 5, 4], ["above", 6, 4], ["bottom", 6, 5]]],
+[["G0Y20A", "G0O58C"], [["top", 5, 4], ["above", 5, 4], ["center", 8.5, 4.5], ["center", 8.5, 6], ["left", 9, 6]]],
 
 // Stat mech
 [["G0S00A", "G0Y94A"], [["top", 7, 5], ["bottom", 7, 6]]],
@@ -237,6 +239,25 @@ var relations = [
 // GNA
 [["G0P81A", "G0P40A"], [["top", 1, 6], ["above", 1, 6], ["above", 5.9, 6], ["top", 5.9, 6]]],
 
+// Principles of economics
+[["G0S62A", "D0H54A"], [["top", 10, 1], ["bottom", 10, 2]]],
+[["G0S62A", "D0T32A"], [["left", 10, 1], ["center", 9.5, 1], ["center", 9.5, 4], ["left", 10, 4]]],
+
+// Skills voor 21ste eeuw
+[["G0S66A", "G0S68A"], [["left", 10, 3], ["center", 9.5, 3], ["center", 9.5, 6], ["left", 10, 6]]],
+
+// Cellbio en biochemie
+[["G0N04C", "G00E0A"], [["left", 9, 1.5], ["center", 6.5, 1.5], ["bottom", 6.5, 2.75]]],
+[["G0N04C", "G0N20E"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 3], ["left", 9, 3]]],
+[["G0N04C", "G0O58C"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 6], ["left", 9, 6]]],
+[["G0N04C", "G0O53C"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 4], ["left", 9, 4]]],
+[["G0N04C", "G0Y94A"], [["left", 9, 1.5], ["center", 7.5, 1.5], ["center", 7.5, 6], ["right", 7, 6]]], // NOTE: bij weiziging naar harde zachte moet dit enkel naar zachte
+
+// Dynamische biochemie
+// [["G0N20E", "G0O58C"], [["left", 9, 3], ["center", 6.5, 3], ["bottom", 6.5, 2.75]]],
+
+// Spectroscopy of biomolecules
+[["G0O58C", "G0P40A"], [["top", 9, 6], ["above", 9, 6], ["above", 6.1, 6], ["top", 6.1, 6]]],
 ];
 </script>
 <script src="Overzicht%20bachelor%20fyscia_files/easeljs.min.js"></script>
@@ -255,11 +276,11 @@ const COLORS = {
   courseInactive: "#eee",
   arrowStroke: "#000",
   textColor: "#000",
-  buttonDefault: "#73bfc7",
-  buttonHover: "#57B7CC",
+  buttonDefault: "#eeeeee",
+  buttonHover: "rgba(4, 157, 217, 0.1)",
   buttonOn: "#049DD9",
-  buttonOnHover: "#04B2D9",
-  buttonBorder: "#003c70",
+  buttonOnHover: "rgba(4, 157, 217, 0.4)",
+  buttonBorder: "#000",
 };
 
 /*
