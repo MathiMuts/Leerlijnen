@@ -43,14 +43,14 @@ var courses = {
   "G00E1A": ["Experimentele\nbasistechnieken", [[6, 3.5], 1.5], "default"],
   "G0S00A": ["Statistische mechanica", [[7, 5], 1], "default"],
   "G0P45B": ["Atoom- en kernfysica", [[5, 6], 1], "default"],
-  "G0Y94A": ["Fysica van de\ngecond. materie", [[7, 6], 1], "default"],
+  "G0Y94A": ["Fysica van de\ngecond. materie", [[7, 6], 1], "default"], // TODO: splitsen?
   "G0P40A": ["Projectwerk\nnatuurkunde", [[6, 5], 2], "default"],
   "G00E0A": ["Chemie", [[6.5, 2.75], 1], "default"],
   "G0N28A": ["Beginselen van\nprogrammeren", [[1, 1], 1], "default"],
   "G0P36B": ["Computergesteund\nprobleemoplossen", [[1, 3.5], 1], "default"],
   //Minor Ster-inf
   "G0Y53A": ["Radiative processes\nin astromomy", [[3, 3], 1], "minor_ster_inf"],
-  "H01P1A":["Objectgericht\nprogrammeren", [[1, 4.5], 1], "minor_ster_inf"],
+  "H01P1A":["Modulair\nprogrammeren", [[1, 4.5], 1], "minor_ster_inf"],
   "G0N98A": ["Fluid\ndynamics", [[2, 5], 1], "minor_ster_inf"],
   "G0Z38A": ["Astronomy\nmethods", [[3, 5], 1], "minor_ster_inf"],
   "G0P81A": ["Gegevensstructuren &\nalgoritmen", [[1, 6], 1], "minor_ster_inf"],
@@ -251,7 +251,7 @@ var relations = [
 [["G0N04C", "G0N20E"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 3], ["left", 9, 3]]],
 [["G0N04C", "G0O58C"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 6], ["left", 9, 6]]],
 [["G0N04C", "G0O53C"], [["left", 9, 1.5], ["center", 8.5, 1.5], ["center", 8.5, 4], ["left", 9, 4]]],
-[["G0N04C", "G0Y94A"], [["left", 9, 1.5], ["center", 7.5, 1.5], ["center", 7.5, 6], ["right", 7, 6]]], // NOTE: bij weiziging naar harde zachte moet dit enkel naar zachte
+[["G0N04C", "G0Y94A"], [["left", 9, 1.5], ["center", 7.5, 1.5], ["center", 7.5, 6], ["right", 7, 6]]], // NOTE: bij wijziging naar harde zachte moet dit enkel naar zachte
 
 // Dynamische biochemie
 // [["G0N20E", "G0O58C"], [["left", 9, 3], ["center", 6.5, 3], ["bottom", 6.5, 2.75]]],
@@ -614,7 +614,8 @@ function hide_arrows_on_init() {
  INFO: CANVAS CREATIE
 */
 const canvas = document.getElementById("canvas");
-canvas.width = cwidth * (Object.keys(columns).length - 4);
+// MODIFICATION: Set canvas to full width to always show all columns.
+canvas.width = cwidth * (Object.keys(columns).length - 2);
 canvas.height = (6 - 1 ) * rheight + cwidth + offset.y;
 
 var stage = new createjs.Stage("canvas");
@@ -699,19 +700,19 @@ stage.on("stagemousedown",
 //   stage.update();
 // }
 
-let hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
+// let hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
 
 function toggle_minor(minor) {
   minorStates[minor] = !minorStates[minor];
   
   
-  hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
-
-  if (hiddenColumns) {
-    canvas.width = cwidth * (Object.keys(columns).length - 4);
-  } else {
-    canvas.width = cwidth * (Object.keys(columns).length - 2);
-  }
+  // hiddenColumns = !minorStates['minor_bio'] && !minorStates['minor_bni']
+  // 
+  // if (hiddenColumns) {
+  //   canvas.width = cwidth * (Object.keys(columns).length - 4);
+  // } else {
+  //   canvas.width = cwidth * (Object.keys(columns).length - 2);
+  // }
 
   for (const id in courses) {
     const course = courses[id][3];
@@ -764,20 +765,20 @@ stage.addChild(title);
 var subtitle = new createjs.Text("Toon Minoren:", "20px Arial", COLORS.textColor);
 subtitle.textAlign = "center";
 subtitle.textBaseline = "top";
-subtitle.x = offset.x + 1*cwidth + 4*hpadding;
+subtitle.x = offset.x + 2*cwidth + 4*hpadding;
 subtitle.y = 1.8*bheight;
-stage.addChild(subtitle);
+//stage.addChild(subtitle);
 
-var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + 2*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_ster_inf"); });
+var toggleMinorSterButton = new CanvasButton("Minor\nster-inf", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_ster_inf"); });
 stage.addChild(toggleMinorSterButton);
 
-var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + 3*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_wisk"); });
+var toggleMinorWiskButton = new CanvasButton("Minor\nwiskunde", offset.x + 4*cwidth, 1.5*bheight, bwidth, bheight, true, function () { toggle_minor("minor_wisk"); });
 stage.addChild(toggleMinorWiskButton);
 
-var toggleMinorBioButton = new CanvasButton("Minor\nbio-chemie", offset.x + 4*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bio"); });
+var toggleMinorBioButton = new CanvasButton("Minor\nbio-chemie", offset.x + 5*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bio"); });
 stage.addChild(toggleMinorBioButton);
 
-var toggleMinorBniButton = new CanvasButton("Minor business\n& innovation", offset.x + 5*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bni"); });
+var toggleMinorBniButton = new CanvasButton("Minor business\n& innovation", offset.x + 6*cwidth, 1.5*bheight, bwidth, bheight, false, function () { toggle_minor("minor_bni"); });
 stage.addChild(toggleMinorBniButton);
 
 createjs.Ticker.on("tick", stage);
